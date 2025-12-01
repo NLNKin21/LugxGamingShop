@@ -1,127 +1,138 @@
 package com.lugx.gamingHouse.domain;
 
-import jakarta.persistence.Column;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
 public class User {
-
-    // ==================== FIELDS ====================
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    // @NotBlank(message = "Email không được để trống")
-    // @Email(message = "Email không hợp lệ")
-    @Column(unique = true, nullable = false)
+    @NotEmpty(message = "Email cannot be empty")
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
-    // @NotBlank(message = "Mật khẩu không được để trống")
-    // @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
-    @Column(nullable = false)
+    @NotEmpty(message = "Password không được để trống")
+    @Size(min = 6, message = "Password phải tối thiểu 6 ký tự")
     private String password;
 
-    // @NotBlank(message = "Họ tên không được để trống")
-    @Column(name = "full_name", nullable = false)
+    @NotEmpty(message = "Tên không được để trống")
+    @Size(min = 3, message = "Tên phải có tối thiểu 3 ký tự")
     private String fullName;
-
-    @Column(name = "address")
     private String address;
-
-    @Column(name = "phone")
     private String phone;
-    
 
-    // ==================== CONSTRUCTORS ====================
-    
-    public User() {
-    }
+    private String avatar;
 
-    public User(String email, String password, String fullName, String address, String phone) {
-        this.email = email;
-        this.password = password;
-        this.fullName = fullName;
-        this.address = address;
-        this.phone = phone;
-    }
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-    public User(Long id, String email, String password, String fullName, String address, String phone) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.fullName = fullName;
-        this.address = address;
-        this.phone = phone;
-    }
+    // one user have many order
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
-    // ==================== GETTER ====================
-    
-    public Long getId() {
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    // ==================== SETTER ====================
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    // ==================== toString ====================
-    
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
     @Override
     public String toString() {
-        return "User [" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
-                ']';
+        return "User [id=" + id + ", email=" + email + ", password=" + password + ", fullName=" + fullName
+                + ", address=" + address + ", phone=" + phone + ", avatar=" + avatar + "]";
     }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
 }

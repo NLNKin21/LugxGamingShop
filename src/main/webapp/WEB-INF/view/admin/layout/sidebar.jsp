@@ -1,29 +1,31 @@
-<div class="d-flex" id="layoutSidenav" style="height: 100vh;">
-  <!-- Sidebar -->
-  <nav class="bg-dark text-white" style="width: 250px;">
-    <div class="p-3 d-flex flex-column h-100">
-      <h5 class="text-white mb-4">FEATURES</h5>
-      <ul class="nav flex-column mb-auto">
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/admin"><i class="fas fa-home"></i> Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/admin/user"><i class="fas fa-users"></i> Users</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/admin/product"><i class="fas fa-box"></i> Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/admin/order"><i class="fas fa-shopping-cart"></i> Orders</a>
-        </li>
-      </ul>
-      <div class="mt-auto pt-3 border-top">
-        <div class="small">Logged in as:</div>
-        ${sessionScope.fullName}
-      </div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="flex-grow-1" style="overflow-y: auto;">
-    <!-- Nội dung chính sẽ được chèn vào đây -->
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">FEATURES</div>
+                        <a class="nav-link" href="/admin">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <a class="nav-link" href="/admin/user">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            User
+                        </a>
+                        <a class="nav-link" href="/admin/product">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Product
+                        </a>
+                        <a class="nav-link" href="/admin/order">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Order
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    Long Nhat shop
+                </div>
+            </nav>
+        </div>

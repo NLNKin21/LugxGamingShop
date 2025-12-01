@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+        <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
             <html lang="en">
 
@@ -8,70 +8,77 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="LaptopAZ" />
+                <meta name="description" content="GamingHouse" />
                 <meta name="author" content="Kin" />
-                <title>Show - GamingHouse</title>
-
-                <!-- Bootstrap CSS -->
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-                <!-- Your custom styles -->
-                <link href="<c:url value='/css/styles.css'/>" rel="stylesheet" />
-
-                <!-- Font Awesome -->
+                <title>Update - GamingHouse</title>
+                <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+                <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
 
             <body class="sb-nav-fixed">
-
                 <jsp:include page="../layout/header.jsp" />
-
                 <div id="layoutSidenav">
                     <jsp:include page="../layout/sidebar.jsp" />
-
-                    <!-- Nội dung chính -->
-                    <div class="flex-grow-1 p-4" style="overflow-y: auto;">
+                    <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Update a User</h1>
-                                <form action="/admin/user/update" method="post" class="mt-4">
-                                    <div class="mb-3" style="display: none;">
-                                        <label for="id" class="form-label">ID</label>
-                                        <input type="text" path="id" name="id" class="form-control" value="${id}"
-                                            readonly />
+                                <h1 class=" mt-4">Manage Users</h1>
+                                <ol class="breadcrumb mb-4">
+                                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/user">User</a></li>
+                                    <li class="breadcrumb-item active">Users</li>
+                                </ol>
+                                <div class="container mt-5">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 mx-auto">
+                                            <p class="fs-1">Update a user</p>
+                                            <hr />
+
+                                            <form:form method="post" action="/admin/user/update"
+                                                modelAttribute="newUser">
+                                                <div class="mb-3" style="display: none;">
+                                                    <label class="form-label">Id</label>
+                                                    <form:input type="text" class="form-control" path="id" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Email</label>
+                                                    <form:input type="email" class="form-control" path="email"
+                                                        readonly="true" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Phone Number:</label>
+                                                    <form:input type="text" class="form-control" path="phone" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Full Name</label>
+                                                    <form:input type="text" class="form-control" path="fullName" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Address</label>
+                                                    <form:input type="text" class="form-control" path="address" />
+                                                </div>
+
+                                                <button type="submit" class="btn btn-warning">Update</button>
+                                            </form:form>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" path="email" name="email" class="form-control"
-                                            value="${user.email}" disabled="true" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="phoneNumber" class="form-label">Phone Number</label>
-                                        <input type="text" path="phone" name="phoneNumber" class="form-control"
-                                            value="${user.phone}" required />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="fullName" class="form-label">Full Name</label>
-                                        <input type="text" path="fullName" name="fullName" class="form-control"
-                                            value="${user.fullName}" required />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="address" class="form-label">Address</label>
-                                        <textarea path="address" name="address" class="form-control" rows="3"
-                                            required>${user.address}</textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Cập Nhật</button>
-                                    <a href="/admin/user" class="btn btn-secondary ms-2">Hủy bỏ</a>
-                                </form>
+                                </div>
                             </div>
                         </main>
                         <jsp:include page="../layout/footer.jsp" />
                     </div>
                 </div>
-
-                <!-- Scripts -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-                <script src="<c:url value='/js/scripts.js'/>"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+                    crossorigin="anonymous"></script>
+                <script src="js/scripts.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+                    crossorigin="anonymous"></script>
+                <script src="js/chart-area-demo.js"></script>
+                <script src="js/chart-bar-demo.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+                    crossorigin="anonymous"></script>
+                <script src="js/datatables-simple-demo.js"></script>
             </body>
 
             </html>
