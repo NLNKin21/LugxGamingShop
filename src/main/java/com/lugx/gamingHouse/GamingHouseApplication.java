@@ -3,12 +3,13 @@ package com.lugx.gamingHouse;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+// @SpringBootApplication
+@SpringBootApplication(exclude = org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class)
 public class GamingHouseApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GamingHouseApplication.class, args);
-		
+
 	}
 
 }
