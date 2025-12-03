@@ -1,20 +1,32 @@
 package com.lugx.gamingHouse.controller.client;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lugx.gamingHouse.domain.User;
 
+import com.lugx.gamingHouse.domain.Product;
+import com.lugx.gamingHouse.services.ProductService;
 
 @Controller
 public class HomePageController {
-    @GetMapping("/")
-    public String getHomePage() {
-        return "/client/homepage/show";
+    private final ProductService productService;
+
+    public HomePageController(ProductService productService){
+        this.productService = productService;
     }
 
+    @GetMapping("/")
+    public String getHomePage(Model model) {
+        // Trending = sold cao nhất
+        List<Product> trending = productService.getTrendingProducts(4);
+        // Most Played = hiển thị game hot cố định hoặc theo lượt xem
+        List<Product> mostPlayed = productService.getMostPlayedProducts(); // tự viết query lấy 6 cái hot nhất
+
+        model.addAttribute("trendingProducts", trending);
+        model.addAttribute("mostPlayedProducts", mostPlayed);
+        return "client/homepage/show"; 
+    }
 }

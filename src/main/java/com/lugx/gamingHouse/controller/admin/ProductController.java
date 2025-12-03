@@ -121,7 +121,7 @@ public class ProductController {
 
     @PostMapping("/admin/product/delete")
     public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product nhat) {
-        this.productService.deleteAProduct(nhat.getId());
+        this.productService.deleteProduct(nhat.getId());
         return "redirect:/admin/product";
     }
 

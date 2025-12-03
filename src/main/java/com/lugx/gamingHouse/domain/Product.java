@@ -13,29 +13,36 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "products")
 public class Product {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
+    @Column(nullable = false)
     private String name;
-    
-    private double price;
-    
-    private String image;
-    
-    @Column(columnDefinition = "MEDIUMTEXT")
-    private String detailDesc;
-    
-    private String shortDesc;
-    
-    private long quantity;
-    
-    private long sold;
-    
 
-    
-    private String category;   // Thể loại (Action, RPG, Sports, etc.)
+    @Column(nullable = false)
+    private Double price;
+
+    private String image;
+
+    // Chỉ dùng đúng 1 cột detail_desc (MEDIUMTEXT)
+    @Column(name = "detail_desc", columnDefinition = "MEDIUMTEXT")
+    private String detailDesc;
+
+    // Chỉ dùng đúng 1 cột short_desc
+    @Column(name = "short_desc")
+    private String shortDesc;
+
+    @Column(nullable = false)
+    private Long quantity;
+
+    @Column(nullable = false)
+    private Long sold = 0L;
+
+    @Column(nullable = false)
+    private String category; // BattleRoyale, MOBA, FPS, RPG, Sports, Adventure, Account...
+
 
     // ==================== RELATIONSHIPS ====================
 
