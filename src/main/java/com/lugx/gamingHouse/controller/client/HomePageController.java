@@ -17,6 +17,8 @@ import com.lugx.gamingHouse.services.ProductService;
 import com.lugx.gamingHouse.services.UserService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -77,4 +79,10 @@ public class HomePageController {
     public String getDenyPage(Model model) {
         return "client/auth/deny";
     }
+
+    @GetMapping("/contact")
+    public String getContact() {
+        return "client/contact/show";
+    }
+    
 }

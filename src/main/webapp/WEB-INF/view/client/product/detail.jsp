@@ -9,11 +9,132 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>${product.name} - GamingHouse</title>
 
+                <!-- Thay đổi font chữ Google Fonts -->
+                <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+                    rel="stylesheet" />
+
                 <link href="/client/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
                 <link rel="stylesheet" href="/client/css/fontawesome.css">
                 <link rel="stylesheet" href="/client/css/templatemo-lugx-gaming.css">
                 <link rel="stylesheet" href="/client/css/owl.css">
                 <link rel="stylesheet" href="/client/css/animate.css">
+
+                <style>
+                    body {
+                        font-family: 'Roboto', sans-serif;
+                        background-color: #f8f9fa;
+                        /* Màu nền sáng nhẹ */
+                    }
+
+                    /* Header và footer */
+                    .header-text h3 {
+                        font-weight: 700;
+                        font-size: 2rem;
+                        margin-bottom: 10px;
+                    }
+
+                    .breadcrumb a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+
+                    .breadcrumb a:hover {
+                        text-decoration: underline;
+                    }
+
+                    /* Sản phẩm chính */
+                    .single-product {
+                        background-color: #ffffff;
+                        padding: 40px 20px;
+                        border-radius: 15px;
+                        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+                        margin-bottom: 50px;
+                    }
+
+                    .left-image img {
+                        border-radius: 15px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                        transition: transform 0.3s ease;
+                    }
+
+                    .left-image img:hover {
+                        transform: scale(1.05);
+                    }
+
+                    /* Thông tin sản phẩm */
+                    h4 {
+                        font-weight: 700;
+                        margin-bottom: 20px;
+                        font-size: 2rem;
+                    }
+
+                    .price {
+                        font-family: 'Arial Rounded MT Bold', sans-serif;
+                    }
+
+                    /* Nút mua hàng */
+                    .main-button {
+                        background-color: #007bff;
+                        color: #fff;
+                        border: none;
+                        border-radius: 8px;
+                        transition: background-color 0.3s ease, transform 0.2s;
+                    }
+
+                    .main-button:hover {
+                        background-color: #0056b3;
+                        transform: translateY(-2px);
+                    }
+
+                    /* Thông tin chung */
+                    ul {
+                        list-style: none;
+                        padding: 0;
+                    }
+
+                    ul li {
+                        margin-bottom: 8px;
+                    }
+
+                    ul li span {
+                        font-weight: 600;
+                    }
+
+                    /* Tab */
+                    .tabs-content {
+                        margin-top: 30px;
+                    }
+
+                    /* Sản phẩm liên quan */
+                    .related-games {
+                        background-color: #f0f0f0;
+                        padding: 50px 20px;
+                    }
+
+                    .item {
+                        background-color: #fff;
+                        border-radius: 10px;
+                        padding: 15px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    }
+
+                    .item:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .item h4 {
+                        font-size: 1.2rem;
+                        margin-top: 10px;
+                        margin-bottom: 8px;
+                    }
+
+                    /* Thư viện font-awesome */
+                    .fa-shopping-bag {
+                        margin-right: 8px;
+                    }
+                </style>
             </head>
 
             <body>
@@ -36,8 +157,8 @@
                             <div class="col-lg-12">
                                 <h3>${product.name}</h3>
                                 <span class="breadcrumb">
-                                    <a href="/">Trang chủ</a> >
-                                    <a href="/shop">Shop</a> >
+                                    <a href="/">Trang chủ</a> &gt;
+                                    <a href="/shop">Shop</a> &gt;
                                     ${product.name}
                                 </span>
                             </div>
@@ -52,8 +173,7 @@
                             <!-- Hình ảnh sản phẩm -->
                             <div class="col-lg-6">
                                 <div class="left-image">
-                                    <img src="/images/product/${product.image}" alt="${product.name}"
-                                        style="width:100%; border-radius:15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                                    <img src="/images/product/${product.image}" alt="${product.name}">
                                 </div>
                             </div>
 
@@ -64,10 +184,10 @@
                                 <!-- Giá tiền -->
                                 <c:choose>
                                     <c:when test="${product.price == 0}">
-                                        <span class="price" style="font-size:36px; color:#e75e8d;">MIỄN PHÍ</span>
+                                        <span class="price" style="font-size:36px; color:#28a745;">MIỄN PHÍ</span>
                                     </c:when>
                                     <c:when test="${product.price >= 2000000}">
-                                        <span class="price" style="font-size:36px; color:#ff0000;">
+                                        <span class="price" style="font-size:36px; color:#dc3545;">
                                             <fmt:formatNumber value="${product.price}" pattern="#,##0" />₫
                                         </span>
                                     </c:when>
@@ -91,15 +211,16 @@
                                 <!-- Số lượng còn lại & đã bán -->
                                 <div
                                     style="margin:25px 0; padding:15px; background:rgba(255,255,255,0.1); border-radius:10px;">
-                                    <span style="color:#0f0;">✔ Còn lại: <strong>${product.quantity}</strong> sản
+                                    <span style="color:#28a745;">✔ Còn lại: <strong>${product.quantity}</strong> sản
                                         phẩm</span><br>
-                                    <span style="color:#ff0;">Đã bán: <strong>${product.sold}</strong> +</span>
+                                    <span style="color:#ffc107;">Đã bán: <strong>${product.sold}</strong> +</span>
                                 </div>
 
                                 <!-- Nút thêm vào giỏ -->
-                                <form action="/cart/add/${product.id}" method="post" style="margin-top:30px;">
-                                    <button type="submit" class="main-button"
-                                        style="padding:15px 40px; font-size:18px;">
+                                <form action="/add-product-to-cart/${product.id}" method="post"
+                                    style="margin-top:30px;">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                    <button type="submit" class="main-button">
                                         <i class="fa fa-shopping-bag"></i> THÊM VÀO GIỎ HÀNG
                                     </button>
                                 </form>
@@ -168,17 +289,13 @@
                 <div class="section categories related-games">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="section-heading">
                                     <h6>Sản phẩm tương tự</h6>
                                     <h2>Có thể bạn thích</h2>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="main-button">
-                                    <a href="/shop">Xem tất cả</a>
-                                </div>
-                            </div>
+
 
                             <c:forEach var="related" items="${relatedProducts}" varStatus="loop">
                                 <c:if test="${loop.index < 5}">
@@ -194,7 +311,7 @@
                                                 <h5 style="font-size:14px;">${related.name}</h5>
                                                 <c:choose>
                                                     <c:when test="${related.price == 0}"><span class="price"
-                                                            style="color:#0f0;">FREE</span></c:when>
+                                                            style="color:#28a745;">FREE</span></c:when>
                                                     <c:otherwise><span class="price">
                                                             <fmt:formatNumber value="${related.price}"
                                                                 pattern="#,##0" />₫
