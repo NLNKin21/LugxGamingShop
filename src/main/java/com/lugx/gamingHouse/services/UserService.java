@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.lugx.gamingHouse.domain.Role;
 import com.lugx.gamingHouse.domain.User;
+import com.lugx.gamingHouse.domain.dto.RegisterDTO;
 import com.lugx.gamingHouse.repository.RoleRepository;
 import com.lugx.gamingHouse.repository.UserRepository;
 
@@ -68,8 +69,15 @@ public class UserService {
     }
 
     public boolean emailExists(String email) {
-    return userRepository.existsByEmail(email);
-}
+        return userRepository.existsByEmail(email);
+    }
 
+    public User registerDTOtoUser(RegisterDTO registerDTO) {
+        User user = new User();
+        user.setFullName(registerDTO.getFirstName() + " " + registerDTO.getLastName());
+        user.setEmail(registerDTO.getEmail());
+        user.setPassword(registerDTO.getPassword());
+        return user;
+    }
 
 }

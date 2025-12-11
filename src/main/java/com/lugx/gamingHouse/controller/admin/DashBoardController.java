@@ -20,7 +20,8 @@ public class DashBoardController {
 
     @GetMapping("/admin")
     public String getDashboard(Model model) {
-        return "/admin/dashboard/show";
+
+        return "admin/dashboard/show";
     }
     
 }
