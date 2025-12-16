@@ -36,7 +36,7 @@
                                             <hr />
 
                                             <form:form method="post" action="/admin/user/update"
-                                                modelAttribute="newUser">
+                                                modelAttribute="newUser" enctype="multipart/form-data">
                                                 <div class="mb-3" style="display: none;">
                                                     <label class="form-label">Id</label>
                                                     <form:input type="text" class="form-control" path="id" />
@@ -57,6 +57,24 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Address</label>
                                                     <form:input type="text" class="form-control" path="address" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="nameFile" class="form-label">Avatar</label>
+                                                    <input class="form-control" type="file" id="nameFile"
+                                                        name="nameFile" accept="image/png, image/jpeg, image/gif"
+                                                        onchange="document.getElementById('avatarPreview').src = window.URL.createObjectURL(this.files[0]); document.getElementById('avatarPreview').style.display = 'block'; document.getElementById('currentAvatar').style.display = 'none';" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div>Ảnh hiện tại:</div>
+                                                    <img style="max-height: 120px; display: none;" alt="avatar preview"
+                                                        id="avatarPreview">
+                                                    <c:if test="${not empty newUser.avatar}">
+                                                        <img id="currentAvatar" src="/images/avatar/${newUser.avatar}"
+                                                            style="max-height: 120px;" alt="Current Avatar"
+                                                            onerror="this.style.display='none'" />
+                                                    </c:if>
                                                 </div>
 
                                                 <button type="submit" class="btn btn-warning">Update</button>

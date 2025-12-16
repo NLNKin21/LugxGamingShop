@@ -59,12 +59,6 @@
                                                         placeholder="Ex: 500" />
                                                 </div>
 
-                                                <!-- Quantity -->
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Quantity</label>
-                                                    <form:input type="number" class="form-control" path="quantity" />
-                                                </div>
-
                                                 <!-- Short Description -->
                                                 <div class="mb-3 col-12">
                                                     <label class="form-label">Short Description *</label>
@@ -81,13 +75,23 @@
                                                     <form:errors path="detailDesc" cssClass="text-danger" />
                                                 </div>
 
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">Phần trăm giảm giá (%)</label>
+                                                    <form:input type="number" class="form-control" path="discount"
+                                                        min="0" max="100" />
+                                                </div>
+
                                                 <!-- Category -->
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Category *</label>
                                                     <form:select class="form-select" path="category">
-                                                        <form:option value="AVENTURE">Aventure</form:option>
-                                                        <form:option value="STRATEGY">Strategy</form:option>
-                                                        <form:option value="RACING">Racing</form:option>
+                                                        <form:option value="BattleRoyale">BattleRoyale</form:option>
+                                                        <form:option value="MOBA">MOBA</form:option>
+                                                        <form:option value="Sports">Sports</form:option>
+                                                        <form:option value="FPS">FPS</form:option>
+                                                        <form:option value="RPG">RPG</form:option>
+                                                        <form:option value="Adventure">Adventure</form:option>
+                                                        <form:option value="Account">Account</form:option>
                                                     </form:select>
                                                 </div>
 

@@ -1,8 +1,11 @@
 package com.lugx.gamingHouse.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,28 +20,27 @@ public class Cart {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;  // ✅ Đổi từ long -> Long
 
-    private int sum; // Tổng số lượng sản phẩm trong giỏ
+    private int sum;
 
     // ==================== RELATIONSHIPS ====================
 
-    // 1 Cart thuộc 1 User (One-to-One)
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // 1 Cart có nhiều CartDetail (One-to-Many)
-    @OneToMany(mappedBy = "cart")
-    private List<CartDetail> cartDetails;
+    // ✅ Thêm cascade và orphanRemoval
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartDetail> cartDetails = new ArrayList<>();  // ✅ Khởi tạo list
 
     // ==================== GETTERS & SETTERS ====================
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -9,4 +9,5 @@ import com.lugx.gamingHouse.domain.Product;
 public interface CartDetailRepositoty extends JpaRepository<CartDetail, Long> {
     boolean existsByCartAndProduct(Cart cart,Product product);
     CartDetail findByCartAndProduct(Cart cart,Product product);
+    void deleteAllByCart(Cart cart);
 }

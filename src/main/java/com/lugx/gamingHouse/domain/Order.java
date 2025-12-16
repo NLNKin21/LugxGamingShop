@@ -1,8 +1,10 @@
 package com.lugx.gamingHouse.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,12 +24,8 @@ public class Order {
 
     private double totalPrice;
 
-    // Thông tin giao hàng
-    private String receiverName;
-    private String receiverAddress;
-    private String receiverPhone;
 
-    // Trạng thái đơn hàng: PENDING, SHIPPING, COMPLETED, CANCELLED
+    // Trạng thái đơn hàng: 
     private String status;
 
     private LocalDateTime orderDate;
@@ -40,8 +38,8 @@ public class Order {
     private User user;
 
     // 1 Order có nhiều OrderDetail (One-to-Many)
-    @OneToMany(mappedBy = "order")
-    private List<OrderDetail> orderDetails;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetail> orderDetails = new ArrayList<>();
 
     // ==================== GETTERS & SETTERS ====================
 
@@ -59,30 +57,6 @@ public class Order {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public String getReceiverName() {
-        return receiverName;
-    }
-
-    public void setReceiverName(String receiverName) {
-        this.receiverName = receiverName;
-    }
-
-    public String getReceiverAddress() {
-        return receiverAddress;
-    }
-
-    public void setReceiverAddress(String receiverAddress) {
-        this.receiverAddress = receiverAddress;
-    }
-
-    public String getReceiverPhone() {
-        return receiverPhone;
-    }
-
-    public void setReceiverPhone(String receiverPhone) {
-        this.receiverPhone = receiverPhone;
     }
 
     public String getStatus() {

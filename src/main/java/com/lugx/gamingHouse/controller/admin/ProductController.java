@@ -100,7 +100,7 @@ public class ProductController {
             curPro.setDetailDesc(pro.getDetailDesc());
             curPro.setShortDesc(pro.getShortDesc());
             curPro.setCategory(pro.getCategory());
-            curPro.setQuantity(pro.getQuantity());
+            curPro.setDiscount(pro.getDiscount());
 
             if (file != null && !file.isEmpty()) {
                 String fileName = this.uploadService.handleSaveUploadFile(file, "product");

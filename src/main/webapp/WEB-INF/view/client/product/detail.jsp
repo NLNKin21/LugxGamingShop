@@ -184,48 +184,52 @@
                                 <!-- Giá tiền -->
                                 <c:choose>
                                     <c:when test="${product.price == 0}">
-                                        <span class="price" style="font-size:36px; color:#28a745;">MIỄN PHÍ</span>
+                                        <span class="price" style="font-size: 36px; color: #28a745;">MIỄN PHÍ</span>
                                     </c:when>
-                                    <c:when test="${product.price >= 2000000}">
-                                        <span class="price" style="font-size:36px; color:#dc3545;">
-                                            <fmt:formatNumber value="${product.price}" pattern="#,##0" />₫
+                                    <c:when test="${product.discount > 0}">
+                                        <span class="price">
+                                            <em style="color: #888; font-size: 24px;"><del>
+                                                    <fmt:formatNumber value="${product.price}" pattern="#,##0" />₫
+                                                </del></em>
+                                            <strong style="color: #e75e8d; font-size: 32px;">
+                                                <fmt:formatNumber
+                                                    value="${product.price * (1 - product.discount / 100.0)}"
+                                                    pattern="#,##0" />₫
+                                            </strong>
                                         </span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="price">
-                                            <em style="color:#888;"><del>
-                                                    <fmt:formatNumber value="${product.price + 500000}"
-                                                        pattern="#,##0" />₫
-                                                </del></em>
-                                            <strong style="color:#e75e8d; font-size:32px;">
-                                                <fmt:formatNumber value="${product.price}" pattern="#,##0" />₫
-                                            </strong>
+                                        <span class="price" style="font-size: 32px; color: #e75e8d;">
+                                            <fmt:formatNumber value="${product.price}" pattern="#,##0" />₫
                                         </span>
                                     </c:otherwise>
                                 </c:choose>
 
-                                <p style="margin-top:20px; line-height:1.8; color:#0d0d0d;">
-                                    ${product.detailDesc}
+                                <p style="margin-top: 20px; line-height: 1.8; color: #0d0d0d;">
+                                    ${product.shortDesc}
                                 </p>
 
-                                <!-- Số lượng còn lại & đã bán -->
-                                <div
-                                    style="margin:25px 0; padding:15px; background:rgba(255,255,255,0.1); border-radius:10px;">
-                                    <span style="color:#28a745;">✔ Còn lại: <strong>${product.quantity}</strong> sản
-                                        phẩm</span><br>
-                                    <span style="color:#ffc107;">Đã bán: <strong>${product.sold}</strong> +</span>
+                                <!-- Đã bán -->
+                                <div style="margin: 25px 0;">
+                                    <span style="color: #ffc107; font-weight: bold;"><i class="fa fa-star"></i> Đã bán:
+                                        <strong>${product.sold}</strong>+</span>
                                 </div>
 
                                 <!-- Nút thêm vào giỏ -->
-                                <form action="/add-product-to-cart/${product.id}" method="post"
-                                    style="margin-top:30px;">
+                                <form action="/add-product-to-cart" method="post" style="margin-top: 30px;">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                    <input type="hidden" name="productId" value="${product.id}" />
                                     <button type="submit" class="main-button">
                                         <i class="fa fa-shopping-bag"></i> THÊM VÀO GIỎ HÀNG
                                     </button>
                                 </form>
 
                                 <ul style="margin-top:30px;">
+                                    <c:if test="${product.discount > 0}">
+                                        <li><span>Giảm giá:</span> <strong
+                                                style="color: #dc3545;">-${product.discount}%</strong>
+                                        </li>
+                                    </c:if>
                                     <li><span>Danh mục:</span> <strong>${product.category}</strong></li>
                                     <li><span>Thể loại:</span>
                                         <c:choose>

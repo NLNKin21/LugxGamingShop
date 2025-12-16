@@ -94,7 +94,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-     public Cart fetchByUser(User user) {
+    public Cart fetchByUser(User user) {
         return this.cartRepository.findByUser(user);
     }
 
@@ -103,17 +103,6 @@ public class ProductService {
     public void increaseSoldCount(long productId, long quantity) {
         Product product = getProductById(productId);
         product.setSold(product.getSold() + quantity);
-        productRepository.save(product);
-    }
-
-    // Giảm số lượng tồn kho
-    @Transactional
-    public void decreaseQuantity(long productId, long quantity) {
-        Product product = getProductById(productId);
-        if (product.getQuantity() < quantity) {
-            throw new RuntimeException("Sản phẩm " + product.getName() + " không đủ hàng!");
-        }
-        product.setQuantity(product.getQuantity() - quantity);
         productRepository.save(product);
     }
 
@@ -163,7 +152,12 @@ public class ProductService {
                     CartDetail cd = new CartDetail();
                     cd.setCart(cart);
                     cd.setProduct(realProduct);
-                    cd.setPrice(realProduct.getPrice());
+                    // Calculate discounted price
+                    double finalPrice = realProduct.getPrice();
+                    if (realProduct.getDiscount() > 0) {
+                        finalPrice = realProduct.getPrice() * (1 - realProduct.getDiscount() / 100.0);
+                    }
+                    cd.setPrice(finalPrice);
                     cd.setQuantity(1);
                     this.cartDetailRepositoty.save(cd);
 
@@ -172,13 +166,29 @@ public class ProductService {
                     cart.setSum(s);
                     this.cartRepository.save(cart);
                     session.setAttribute("sum", s);
-                } else {
-                    oldDetail.setQuantity(oldDetail.getQuantity() + 1);
-                    this.cartDetailRepositoty.save(oldDetail);
-                }
+                } // Nếu sản phẩm đã có trong giỏ, không làm gì cả.
 
             }
 
         }
     }
+
+    @Transactional
+    public void handleRemoveCartDetail(long cartDetailId, HttpSession session) {
+        Optional<CartDetail> cartDetailOptional = this.cartDetailRepositoty.findById(cartDetailId);
+        if (cartDetailOptional.isPresent()) {
+            CartDetail cartDetail = cartDetailOptional.get();
+            Cart cart = cartDetail.getCart();
+
+            // Cập nhật sum
+            int newSum = cart.getSum() - 1;
+            cart.setSum(newSum);
+            session.setAttribute("sum", newSum);
+
+            // Xóa CartDetail khỏi danh sách của Cart.
+            // Do có orphanRemoval=true, Hibernate sẽ tự động xóa CartDetail khỏi DB.
+            cart.getCartDetails().remove(cartDetail);
+        }
+    }
+
 }

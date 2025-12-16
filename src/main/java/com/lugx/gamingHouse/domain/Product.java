@@ -35,14 +35,12 @@ public class Product {
     private String shortDesc;
 
     @Column(nullable = false)
-    private Long quantity;
-
-    @Column(nullable = false)
     private Long sold = 0L;
+
+    private int discount;
 
     @Column(nullable = false)
     private String category; // BattleRoyale, MOBA, FPS, RPG, Sports, Adventure, Account...
-
 
     // ==================== RELATIONSHIPS ====================
 
@@ -56,11 +54,11 @@ public class Product {
 
     // ==================== GETTERS & SETTERS ====================
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,12 +70,20 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 
     public String getImage() {
@@ -104,19 +110,11 @@ public class Product {
         this.shortDesc = shortDesc;
     }
 
-    public long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-
-    public long getSold() {
+    public Long getSold() {
         return sold;
     }
 
-    public void setSold(long sold) {
+    public void setSold(Long sold) {
         this.sold = sold;
     }
 
@@ -147,9 +145,8 @@ public class Product {
     @Override
     public String toString() {
         return "Product [id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", detailDesc="
-                + detailDesc + ", shortDesc=" + shortDesc + ", quantity=" + quantity + ", sold=" + sold + ", category="
-                + category + ", cartDetails=" + cartDetails + ", orderDetails=" + orderDetails + "]";
+                + detailDesc + ", shortDesc=" + shortDesc + ", sold=" + sold + ", category=" + category
+                + ", cartDetails=" + cartDetails + ", orderDetails=" + orderDetails + "]";
     }
 
-    
 }

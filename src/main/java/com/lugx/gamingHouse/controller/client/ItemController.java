@@ -18,6 +18,7 @@ import com.lugx.gamingHouse.domain.Cart;
 import com.lugx.gamingHouse.domain.CartDetail;
 import com.lugx.gamingHouse.domain.Product;
 import com.lugx.gamingHouse.domain.User;
+import com.lugx.gamingHouse.services.UserService;
 import com.lugx.gamingHouse.services.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,17 +27,15 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
-
 
 @Controller
 public class ItemController {
     private final ProductService productService;
+    private final UserService userService;
 
-    public ItemController(ProductService productService){
+    public ItemController(ProductService productService, UserService userService) {
         this.productService = productService;
+        this.userService = userService;
     }
 
     @GetMapping("/products")
@@ -80,7 +79,7 @@ public class ItemController {
     @RequestMapping("/product/{id}")
     public String getProductDetailPage(Model model, @PathVariable long id) {
         Product product = productService.getProductById(id);
-        List<Product> related = productService.getTrendingProducts(5); 
+        List<Product> related = productService.getTrendingProducts(5);
 
         model.addAttribute("product", product);
         model.addAttribute("relatedProducts", related);
@@ -88,29 +87,33 @@ public class ItemController {
         return "client/product/detail";
     }
 
-    @PostMapping("/add-product-to-cart/{id}")
-    public String addProductToCart(@PathVariable long id, HttpServletRequest request) {
+    @PostMapping("/add-product-to-cart")
+    public String addProductToCart(@RequestParam("productId") long productId, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        long productId = id;
-        String email = (String) session.getAttribute("email");
+        String email = (String) session.getAttribute("email"); // Giả sử email được lưu trong session khi đăng nhập
         this.productService.handleAddProductToCart(email, productId, session);
         return "redirect:/";
     }
 
+    @PostMapping("/delete-cart-product/{id}")
+    public String deleteCartProduct(Model model, @PathVariable long id, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        this.productService.handleRemoveCartDetail(id, session);
+        return "redirect:/cart";
+    }
+
     @GetMapping("/cart")
     public String getCartPage(Model model, HttpServletRequest request) {
-        User curUser = new User();
         HttpSession session = request.getSession(false);
-        long id = (long) session.getAttribute("id");
-        curUser.setId(id);
+        String email = (String) session.getAttribute("email");
+        User curUser = this.userService.getUserByEmail(email);
 
         Cart cart = this.productService.fetchByUser(curUser);
-
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
-            totalPrice += cd.getPrice() * cd.getQuantity();
+            totalPrice += cd.getPrice(); // Quantity is always 1 for digital products
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
@@ -119,7 +122,5 @@ public class ItemController {
 
         return "client/cart/show";
     }
-    
 
-    
 }

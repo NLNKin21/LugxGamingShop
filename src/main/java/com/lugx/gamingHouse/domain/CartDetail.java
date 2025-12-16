@@ -11,13 +11,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "cart_details")
 public class CartDetail {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private long quantity;
-    
+
     private double price; // Giá tại thời điểm thêm vào giỏ
 
     // ==================== RELATIONSHIPS ====================

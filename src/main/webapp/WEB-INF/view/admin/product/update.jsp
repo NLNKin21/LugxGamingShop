@@ -58,17 +58,23 @@
                                                             <form:input type="text" class="form-control"
                                                                 path="shortDesc" />
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <label class="form-label">Quantity</label>
+                                                        <div class="col-md-12">
+                                                            <label class="form-label">discount (%)</label>
                                                             <form:input type="number" class="form-control"
-                                                                path="quantity" />
+                                                                path="discount" />
                                                         </div>
+
                                                         <div class="col-md-6">
                                                             <label class="form-label">Category</label>
                                                             <form:select class="form-select" path="category">
-                                                                <form:option value="AVENTURE">Aventure</form:option>
-                                                                <form:option value="STRATEGY">Strategy</form:option>
-                                                                <form:option value="RACING">Racing</form:option>
+                                                                <form:option value="BattleRoyale">BattleRoyale
+                                                                </form:option>
+                                                                <form:option value="MOBA">MOBA</form:option>
+                                                                <form:option value="Sports">Sports</form:option>
+                                                                <form:option value="FPS">FPS</form:option>
+                                                                <form:option value="RPG">RPG</form:option>
+                                                                <form:option value="Adventure">Adventure</form:option>
+                                                                <form:option value="Account">Account</form:option>
                                                             </form:select>
                                                         </div>
 

@@ -104,7 +104,7 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/update")
-    public String postUpdateUserPage(Model model, @ModelAttribute("newUser") User kin) {
+    public String postUpdateUserPage(Model model, @ModelAttribute("newUser") User kin,@RequestParam("nameFile") MultipartFile file) {
         User curUser = this.userService.getUserById(kin.getId());
         if (curUser != null) {
             curUser.setAddress(kin.getAddress());
@@ -114,6 +114,11 @@ public class UserController {
             // Preserve old values
             kin.setEmail(curUser.getEmail());
             kin.setPassword(curUser.getPassword());
+
+            if(file != null && !file.isEmpty()){
+                String fileName = this.uploadService.handleSaveUploadFile(file, "avatar");
+                curUser.setAvatar(fileName);
+            }
 
             this.userService.handleSaveUser(curUser);
         }
