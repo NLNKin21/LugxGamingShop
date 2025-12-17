@@ -68,7 +68,7 @@
                         nhân.</p>
                     <div>
                         <a href="/products" class="btn btn-primary rounded-pill px-4 py-2">Tiếp tục mua sắm</a>
-                        <a href="/profile/orders" class="btn btn-outline-secondary rounded-pill px-4 py-2 ms-2">Xem lịch
+                        <a href="/order-history" class="btn btn-outline-secondary rounded-pill px-4 py-2 ms-2">Xem lịch
                             sử đơn hàng</a>
                     </div>
                 </div>

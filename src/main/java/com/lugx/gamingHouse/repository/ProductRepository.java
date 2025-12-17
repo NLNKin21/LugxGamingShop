@@ -8,11 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.lugx.gamingHouse.domain.Product;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
@@ -25,7 +28,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     Product findProductById(long id);
 
     Page<Product> findAll(Pageable pageable);
-    Page<Product> findAll(Specification<Product> spec,Pageable pageable);
+
+    Page<Product> findAll(Specification<Product> spec, Pageable pageable);
 
     // Trending - Top bán chạy
     @Query("SELECT p FROM Product p ORDER BY p.sold DESC LIMIT :limit")
@@ -47,4 +51,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     // Filter price
     Page<Product> findByPriceBetween(double minPrice, double maxPrice, Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Product p SET p.sold = p.sold + ?2 WHERE p.id = ?1")
+    void updateSold(long productId, long quantity);
 }

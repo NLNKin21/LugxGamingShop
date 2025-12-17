@@ -1,99 +1,152 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-            <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-                <!DOCTYPE html>
-                <html lang="en">
 
-                <head>
-                    <meta charset="utf-8" />
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                    <meta name="description" content="" />
-                    <meta name="author" content="" />
-                    <title>Login - SB Admin</title>
-                    <link href="css/styles.css" rel="stylesheet" />
-                    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-                        crossorigin="anonymous"></script>
-                </head>
+        <!DOCTYPE html>
+        <html lang="vi">
 
-                <body class="bg-primary">
-                    <div id="layoutAuthentication">
-                        <div id="layoutAuthentication_content">
-                            <main>
-                                <div class="container">
-                                    <div class="row justify-content-center">
-                                        <div class="col-lg-5">
-                                            <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                                <div class="card-header">
-                                                    <h3 class="text-center font-weight-light my-4">Login</h3>
-                                                </div>
-                                                <div class="card-body">
-                                                    <form method="post" action="/login">
-                                                        <c:if test="${param.error != null}">
-                                                            <div class="my-2" style="color: red;">Invalid email or
-                                                                password.</div>
-                                                        </c:if>
+        <head>
+            <meta charset="UTF-8">
+            <title>Login | LUGX Gaming</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
 
-                                                          <c:if test="${param.logout != null}">
-                                                            <div class="my-2" style="color: green;">Logout success.</div>
-                                                        </c:if>
-                                                        <div class="form-floating mb-3">
-                                                            <input class="form-control" type="email"
-                                                                placeholder="name@example.com" name="username" />
-                                                            <label>Email address</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <input class="form-control" type="password"
-                                                                placeholder="Password" name="password" />
-                                                            <label>Password</label>
-                                                        </div>
-                                                        <div>
-                                                            <input type="hidden" name="${_csrf.parameterName}"
-                                                                value="${_csrf.token}" />
-                                                        </div>
-                                                        <div class="form-check mb-3">
-                                                            <input class="form-check-input" id="inputRememberPassword"
-                                                                type="checkbox" value="" />
-                                                            <label class="form-check-label"
-                                                                for="inputRememberPassword">Remember Password</label>
-                                                        </div>
-                                                        <div
-                                                            class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                            <a class="small" href="password.html">Forgot Password?</a>
-                                                            <button class="btn btn-primary"
-                                                                href="index.html">Login</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="card-footer text-center py-3">
-                                                    <div class="small"><a href="/register">Need an account? Sign up!</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </main>
+            <!-- Bootstrap -->
+            <link href="/client/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+            <style>
+                body {
+                    min-height: 100vh;
+                    background: linear-gradient(135deg, #a28a9b, #6052fb);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: 'Segoe UI', sans-serif;
+                }
+
+                .login-wrapper {
+                    width: 100%;
+                    max-width: 420px;
+                    position: relative;
+                }
+
+                .login-card {
+                    backdrop-filter: blur(20px);
+                    background: rgba(255, 255, 255, 0.15);
+                    border-radius: 20px;
+                    padding: 40px 35px;
+                    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+                    color: #fff;
+                }
+
+                .login-card h3 {
+                    text-align: center;
+                    font-weight: 700;
+                    margin-bottom: 25px;
+                }
+
+                .form-control {
+                    background: rgba(255, 255, 255, 0.2);
+                    border: none;
+                    border-radius: 12px;
+                    color: #fff;
+                    padding: 12px 15px;
+                }
+
+                .form-control::placeholder {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+
+                .form-control:focus {
+                    box-shadow: none;
+                    background: rgba(255, 255, 255, 0.3);
+                    color: #fff;
+                }
+
+                .btn-login {
+                    background: #ffc107;
+                    color: #000;
+                    border-radius: 14px;
+                    font-weight: 600;
+                    padding: 12px;
+                    border: none;
+                    transition: 0.3s;
+                }
+
+                .btn-login:hover {
+                    background: #ffb300;
+                }
+
+                .extra-links {
+                    text-align: center;
+                    margin-top: 20px;
+                    font-size: 14px;
+                }
+
+                .extra-links a {
+                    color: #ffd54f;
+                    text-decoration: none;
+                }
+
+                .alert {
+                    background: rgba(255, 255, 255, 0.2);
+                    border: none;
+                    color: #fff;
+                    border-radius: 10px;
+                    font-size: 14px;
+                }
+            </style>
+        </head>
+
+        <body>
+
+            <div class="login-wrapper">
+                <div class="login-card">
+
+                    <h3>Login</h3>
+
+                    <c:if test="${param.error != null}">
+                        <div class="alert alert-danger text-center">
+                            Email hoặc mật khẩu không đúng
                         </div>
-                        <div id="layoutAuthentication_footer">
-                            <footer class="py-4 bg-light mt-auto">
-                                <div class="container-fluid px-4">
-                                    <div class="d-flex align-items-center justify-content-between small">
-                                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                                        <div>
-                                            <a href="#">Privacy Policy</a>
-                                            &middot;
-                                            <a href="#">Terms &amp; Conditions</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </footer>
+                    </c:if>
+
+                    <c:if test="${param.logout != null}">
+                        <div class="alert alert-success text-center">
+                            Đăng xuất thành công
                         </div>
+                    </c:if>
+
+                    <form action="/login" method="post">
+                        <div class="mb-3">
+                            <input type="email" name="username" class="form-control" placeholder="Email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        </div>
+
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remember-me" id="remember">
+                                <label class="form-check-label text-white" for="remember">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="#" class="text-warning small">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-login w-100">Login</button>
+                    </form>
+
+                    <div class="extra-links">
+                        Don’t have an account?
+                        <a href="/register">Sign up</a>
                     </div>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                        crossorigin="anonymous"></script>
-                    <script src="js/scripts.js"></script>
-                </body>
+                </div>
+            </div>
 
-                </html>
+            <script src="/client/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        </body>
+
+        </html>

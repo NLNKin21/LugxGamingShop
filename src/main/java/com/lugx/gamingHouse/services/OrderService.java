@@ -49,17 +49,17 @@ public class OrderService {
     }
 
     @Transactional
-    public void handlePlaceOrder(User user, HttpSession session) {
+    public Order handlePlaceOrder(User user, HttpSession session) {
         // ✅ Fetch lại user từ DB để đảm bảo managed entity
         User managedUser = this.userRepository.findById(user.getId());
         if (managedUser == null) {
-            return;
+            return null;
         }
 
         Cart cart = this.cartRepository.findByUser(managedUser);
 
         if (cart == null || cart.getCartDetails() == null || cart.getCartDetails().isEmpty()) {
-            return;
+            return null;
         }
 
         List<CartDetail> cartDetails = cart.getCartDetails();
@@ -106,11 +106,14 @@ public class OrderService {
                 orderDetail.setPrice(temp.price);
                 orderDetail.setQuantity(temp.quantity);
                 this.orderDetailRepository.save(orderDetail);
+                order.getOrderDetails().add(orderDetail); // Thêm OrderDetail vào danh sách của Order
             }
         }
 
         // Cập nhật session
         session.setAttribute("sum", 0);
+
+        return order;
     }
 
     // ✅ Inner class lưu thông tin tạm

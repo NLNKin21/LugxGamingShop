@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.lugx.gamingHouse.domain.Cart;
 import com.lugx.gamingHouse.domain.CartDetail;
 import com.lugx.gamingHouse.domain.User;
+import com.lugx.gamingHouse.domain.OrderDetail;
 import com.lugx.gamingHouse.services.UserService;
 import com.lugx.gamingHouse.services.OrderService;
 import com.lugx.gamingHouse.domain.Order;
@@ -24,6 +25,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller("clientOrderController")
 public class OrderController {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     private final OrderService orderService;
     private final UserService userService;
@@ -42,7 +45,15 @@ public class OrderController {
         User user = this.userService.getUserByEmail(email);
 
         if (user != null) {
-            this.orderService.handlePlaceOrder(user, session);
+            // Giả định handlePlaceOrder trả về đối tượng Order vừa được tạo
+            Order newOrder = this.orderService.handlePlaceOrder(user, session);
+
+            // Cập nhật số lượng đã bán cho từng sản phẩm trong đơn hàng
+            if (newOrder != null) {
+                for (OrderDetail detail : newOrder.getOrderDetails()) {
+                    this.productService.updateSold(detail.getProduct().getId(), detail.getQuantity());
+                }
+            }
         }
 
         return "redirect:/thank-you";
@@ -82,9 +93,8 @@ public class OrderController {
 
         if (curUser != null) {
             List<Order> orders = this.orderService.fetchOrderByUser(curUser);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             for (Order order : orders) {
-                order.setFormattedDate(order.getOrderDate().format(formatter));
+                order.setFormattedDate(order.getOrderDate().format(DATE_TIME_FORMATTER));
             }
             model.addAttribute("orders", orders);
         } else {
@@ -96,9 +106,24 @@ public class OrderController {
     }
 
     @GetMapping("/order-history/{id}")
-    public String getOrderHistoryDetailPage(@PathVariable long id, Model model) {
+    public String getOrderHistoryDetailPage(@PathVariable long id, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        // Người dùng chưa đăng nhập, chuyển hướng về trang đăng nhập
+        if (session == null || session.getAttribute("email") == null) {
+            return "redirect:/login";
+        }
+
+        String email = (String) session.getAttribute("email");
+        User curUser = this.userService.getUserByEmail(email);
         Order order = this.orderService.fetchOrderById(id);
+
+        // Kiểm tra nếu đơn hàng không tồn tại hoặc không thuộc về người dùng hiện tại
+        if (order == null || curUser == null || order.getUser().getId() != curUser.getId()) {
+            return "redirect:/order-history"; // Chuyển hướng về trang lịch sử đơn hàng
+        }
+
+        model.addAttribute("formattedDate", order.getOrderDate().format(DATE_TIME_FORMATTER));
         model.addAttribute("order", order);
-        return "client/order/detail";
+        return "client/cart/order-detail";
     }
 }

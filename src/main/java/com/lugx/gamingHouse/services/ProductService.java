@@ -199,4 +199,8 @@ public class ProductService {
         return this.userRepository.count();
     }
 
+    public void updateSold(long productId, long quantity) {
+        this.productRepository.updateSold(productId, quantity);
+    }
+
 }

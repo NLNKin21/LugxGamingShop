@@ -92,7 +92,7 @@ public class ItemController {
         HttpSession session = request.getSession(false);
         String email = (String) session.getAttribute("email"); // Giả sử email được lưu trong session khi đăng nhập
         this.productService.handleAddProductToCart(email, productId, session);
-        return "redirect:/";
+        return "redirect:/products";
     }
 
     @PostMapping("/delete-cart-product/{id}")
@@ -113,7 +113,7 @@ public class ItemController {
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
-            totalPrice += cd.getPrice(); 
+            totalPrice += cd.getPrice();
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
@@ -122,7 +122,5 @@ public class ItemController {
 
         return "client/cart/show";
     }
-
-    
 
 }
