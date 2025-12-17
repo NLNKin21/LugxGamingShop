@@ -113,7 +113,7 @@ public class ItemController {
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
-            totalPrice += cd.getPrice(); // Quantity is always 1 for digital products
+            totalPrice += cd.getPrice(); 
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
@@ -122,5 +122,7 @@ public class ItemController {
 
         return "client/cart/show";
     }
+
+    
 
 }

@@ -1,8 +1,11 @@
 package com.lugx.gamingHouse.services;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.time.LocalDateTime;
+import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -125,6 +128,10 @@ public class OrderService {
         return this.orderRepository.findById(id).orElse(null);
     }
 
+    public List<Order> fetchOrderByUser(User user) {
+        return this.orderRepository.findByUser(user);
+    }
+
     public void updateOrder(Order order) {
         Order existingOrder = this.orderRepository.findById(order.getId()).orElse(null);
         if (existingOrder != null) {
@@ -135,5 +142,38 @@ public class OrderService {
 
     public void deleteOrderById(long id) {
         this.orderRepository.deleteById(id);
+    }
+
+    public long countOrders() {
+        return this.orderRepository.count();
+    }
+
+    public double sumEarnings() {
+        return this.orderRepository.sumTotalPriceByStatus("COMPLETE");
+    }
+
+    public List<Order> fetchAllOrders() {
+        return this.orderRepository.findAll();
+    }
+
+    // public double sumAllOrders() {
+    // return this.orderRepository.sumAllTotalPrice();
+    // }
+
+    public Map<Integer, Double> getMonthlyEarnings(int year) {
+        List<Object[]> results = this.orderRepository.findMonthlyEarnings(year);
+
+        // Initialize a map with all 12 months set to 0.0, using LinkedHashMap to
+        // preserve order
+        Map<Integer, Double> monthlyEarnings = new LinkedHashMap<>();
+        IntStream.rangeClosed(1, 12).forEach(month -> monthlyEarnings.put(month, 0.0));
+
+        // Populate the map with actual earnings from the query results
+        for (Object[] result : results) {
+            Integer month = (Integer) result[0];
+            Double total = (Double) result[1];
+            monthlyEarnings.put(month, total);
+        }
+        return monthlyEarnings;
     }
 }

@@ -38,6 +38,11 @@
                 border: 0;
             }
 
+            .profile-menu .dropdown-menu li a i,
+            .profile-menu .dropdown-menu li button i {
+                margin-right: 10px;
+            }
+
             .profile-menu .dropdown-menu li a:hover {
                 background-color: #2288ee;
             }
@@ -73,11 +78,11 @@
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
-                                <li><a href="/" class="active">Trang chủ</a></li>
-                                <li><a href="/products">Sản phẩm</a></li>
-                                <li><a href="/cart">Giỏ hàng<c:if test="${sessionScope.sum > 0}"><span
+                                <li><a href="/" class="active">Home</a></li>
+                                <li><a href="/products">Products</a></li>
+                                <li><a href="/cart">Cart<c:if test="${sessionScope.sum > 0}"><span
                                                 class="cart-badge">${sessionScope.sum}</span></c:if></a></li>
-                                <li><a href="/contact">Liên hệ</a></li>
+                                <li><a href="/contact">Contact</a></li>
 
                                 <c:choose>
                                     <c:when test="${not empty sessionScope.id}">
@@ -88,8 +93,21 @@
                                                     onerror="this.onerror=null; this.src='/images/avatar/default-avatar.png';">
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="/order-history">Lịch sử mua hàng</a></li>
-                                                <li><a href="/login">Đăng xuất</a></li>
+                                                <c:if test="${sessionScope.fullName == 'ADMIN'}">
+                                                    <li><a href="/admin"><i
+                                                                class="fas fa-tachometer-alt fa-fw"></i>Admin
+                                                            Page</a></li>
+                                                </c:if>
+                                                <li><a href="/order-history"><i class="fas fa-history fa-fw"></i>Order
+                                                        History</a></li>
+                                                <li>
+                                                    <form action="/logout" method="post" style="margin: 0;">
+                                                        <input type="hidden" name="${_csrf.parameterName}"
+                                                            value="${_csrf.token}" />
+                                                        <button type="submit" class="dropdown-item"><i
+                                                                class="fas fa-sign-out-alt fa-fw"></i>Logout</button>
+                                                    </form>
+                                                </li>
                                             </ul>
                                         </li>
                                     </c:when>

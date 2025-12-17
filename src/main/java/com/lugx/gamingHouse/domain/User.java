@@ -26,12 +26,12 @@ public class User {
     @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
-    @NotEmpty(message = "Password không được để trống")
-    @Size(min = 6, message = "Password phải tối thiểu 6 ký tự")
+    @NotEmpty(message = "Password cannot be empty")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    @NotEmpty(message = "Tên không được để trống")
-    @Size(min = 3, message = "Tên phải có tối thiểu 3 ký tự")
+    @NotEmpty(message = "Name cannot be empty")
+    @Size(min = 3, message = "Name must be at least 3 characters")
     private String fullName;
     private String address;
     private String phone;

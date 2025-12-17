@@ -15,6 +15,7 @@ import com.lugx.gamingHouse.domain.User;
 import com.lugx.gamingHouse.repository.CartDetailRepositoty;
 import com.lugx.gamingHouse.repository.CartRepository;
 import com.lugx.gamingHouse.repository.ProductRepository;
+import com.lugx.gamingHouse.repository.UserRepository;
 import com.lugx.gamingHouse.services.specification.ProductSpecs;
 
 import jakarta.servlet.http.HttpSession;
@@ -27,56 +28,58 @@ public class ProductService {
     private final CartRepository cartRepository;
     private final CartDetailRepositoty cartDetailRepositoty;
     private final UserService userService;
+    private final UserRepository userRepository;
     // private final OrderRepository orderRepository;
     // private final OrderDetailRepository orderDetailRepository;
 
     public ProductService(ProductRepository productRepository, CartRepository cartRepository,
-            CartDetailRepositoty cartDetailRepositoty, UserService userService) {
+            CartDetailRepositoty cartDetailRepositoty, UserService userService, UserRepository userRepository) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepositoty = cartDetailRepositoty;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
-    // ==================== TRANG CHỦ ====================
+    // ==================== HOME PAGE ====================
 
-    // Trending Products - Lấy top bán chạy nhất (sold cao nhất)
+    // Trending Products - Get top bestsellers (highest sold count)
     public List<Product> getTrendingProducts(int limit) {
         return productRepository.findTopSold(limit);
     }
 
-    // Most Played / Top Games - Lấy 6 game hot nhất (có thể theo sold hoặc cố định)
+    // Most Played / Top Games - Get 6 hottest games (can be by sold count or fixed)
     public List<Product> getMostPlayedProducts() {
         return productRepository.findTop6MostPlayed();
     }
 
-    // Lấy sản phẩm mới nhất (dành cho phần "New Arrival" nếu muốn thêm)
+    // Get latest products (for a "New Arrival" section if desired)
     public List<Product> getNewArrivals(int limit) {
         return productRepository.findNewArrivals(limit);
     }
 
     // ==================== SHOP & FILTER ====================
 
-    // Lấy tất cả sản phẩm + phân trang
+    // Get all products + pagination
     public Page<Product> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
 
-    // Tìm theo category (BattleRoyale, MOBA, Account, v.v.)
+    // Find by category (BattleRoyale, MOBA, Account, etc.)
     public Page<Product> getProductsByCategory(String category, Pageable pageable) {
         return productRepository.findByCategory(category, pageable);
     }
 
-    // Lọc theo khoảng giá (rất cần cho shop Việt Nam)
+    // Filter by price range
     public Page<Product> filterByPrice(double minPrice, double maxPrice, Pageable pageable) {
         return productRepository.findByPriceBetween(minPrice, maxPrice, pageable);
     }
 
-    // ==================== CHI TIẾT & CRUD ====================
+    // ==================== DETAIL & CRUD ====================
 
     public Product getProductById(long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
     }
 
     @Transactional
@@ -89,7 +92,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    // Lấy tất cả sản phẩm (dùng cho admin hoặc combobox)
+    // Get all products (for admin or combobox)
     public List<Product> getAllProductsList() {
         return productRepository.findAll();
     }
@@ -98,7 +101,7 @@ public class ProductService {
         return this.cartRepository.findByUser(user);
     }
 
-    // Tăng số lượng đã bán khi có đơn hàng thành công (rất quan trọng!)
+    // Increase sold count on successful order (very important!)
     @Transactional
     public void increaseSoldCount(long productId, long quantity) {
         Product product = getProductById(productId);
@@ -110,17 +113,17 @@ public class ProductService {
 
         Specification<Product> spec = Specification.where(null);
 
-        // Lọc theo tên
+        // Filter by name
         if (name != null && !name.trim().isEmpty()) {
             spec = spec.and(ProductSpecs.nameLike(name.trim()));
         }
 
-        // Lọc theo category
+        // Filter by category
         if (cate != null && !cate.isEmpty()) {
             spec = spec.and(ProductSpecs.categoryIn(cate));
         }
 
-        // điều kiện maxPrice > 0
+        // condition maxPrice > 0
         if (maxPrice != null && maxPrice > 0) {
             spec = spec.and(ProductSpecs.priceLessThanOrEqualTo(maxPrice));
         }
@@ -141,7 +144,7 @@ public class ProductService {
             }
             // save cart_detail
 
-            // tim productByID
+            // find productByID
             Optional<Product> producOptional = this.productRepository.findById(productId);
             if (producOptional.isPresent()) {
                 Product realProduct = producOptional.get();
@@ -166,7 +169,7 @@ public class ProductService {
                     cart.setSum(s);
                     this.cartRepository.save(cart);
                     session.setAttribute("sum", s);
-                } // Nếu sản phẩm đã có trong giỏ, không làm gì cả.
+                } // If product is already in cart, do nothing.
 
             }
 
@@ -180,15 +183,20 @@ public class ProductService {
             CartDetail cartDetail = cartDetailOptional.get();
             Cart cart = cartDetail.getCart();
 
-            // Cập nhật sum
+            // Update sum
             int newSum = cart.getSum() - 1;
             cart.setSum(newSum);
             session.setAttribute("sum", newSum);
 
-            // Xóa CartDetail khỏi danh sách của Cart.
-            // Do có orphanRemoval=true, Hibernate sẽ tự động xóa CartDetail khỏi DB.
+            // Remove CartDetail from Cart's list.
+            // Due to orphanRemoval=true, Hibernate will automatically delete CartDetail
+            // from DB.
             cart.getCartDetails().remove(cartDetail);
         }
+    }
+
+    public long countProducts() {
+        return this.userRepository.count();
     }
 
 }

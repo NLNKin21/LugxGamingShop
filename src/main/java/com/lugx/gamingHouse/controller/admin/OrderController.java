@@ -50,7 +50,7 @@ public class OrderController {
     @GetMapping("/update/{id}")
     public String getUpdateOrderPage(@PathVariable long id, Model model) {
         Order order = this.orderService.fetchOrderById(id);
-        model.addAttribute("order", order);
+        model.addAttribute("newOrder", order);
         return "admin/order/update";
     }
 
@@ -63,7 +63,7 @@ public class OrderController {
     @GetMapping("/delete/{id}")
     public String getDeleteOrderPage(@PathVariable long id, Model model) {
         Order order = this.orderService.fetchOrderById(id);
-        model.addAttribute("order", order);
+        model.addAttribute("newOrder", order);
         return "admin/order/delete";
     }
 
