@@ -157,8 +157,8 @@
                                 <div class="item">
                                     <h4>Battle Royale</h4>
                                     <div class="thumb">
-                                        <a href="/shop?category=BattleRoyale"><img
-                                                src="/client/images/categories-01.jpg" alt=""></a>
+                                        <a href="/products?name=&category=BattleRoyale&maxPrice=0&sort="><img
+                                                src="/client/images/c1.jpg" alt=""></a>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +166,7 @@
                                 <div class="item">
                                     <h4>MOBA</h4>
                                     <div class="thumb">
-                                        <a href="/shop?category=MOBA"><img src="/client/images/categories-05.jpg"
+                                        <a href="/products?name=&category=MOBA&maxPrice=0&sort="><img src="/client/images/c2.jpg"
                                                 alt=""></a>
                                     </div>
                                 </div>
@@ -175,25 +175,25 @@
                                 <div class="item">
                                     <h4>FPS</h4>
                                     <div class="thumb">
-                                        <a href="/shop?category=FPS"><img src="/client/images/categories-03.jpg"
+                                        <a href=/products?name=&category=FPS&maxPrice=0&sort=><img src="/client/images/c3.jpg"
                                                 alt=""></a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg col-sm-6 col-xs-12">
                                 <div class="item">
-                                    <h4>RPG</h4>
+                                    <h4>Sports</h4>
                                     <div class="thumb">
-                                        <a href="/shop?category=RPG"><img src="/client/images/categories-04.jpg"
+                                        <a href="/products?name=&category=Sports&maxPrice=0&sort="><img src="/client/images/c4.jpg"
                                                 alt=""></a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg col-sm-6 col-xs-12">
                                 <div class="item">
-                                    <h4>Account Game</h4>
+                                    <h4>Adventure</h4>
                                     <div class="thumb">
-                                        <a href="/shop?category=Account"><img src="/client/images/categories-05.jpg"
+                                        <a href="/products?name=&category=Adventure&maxPrice=0&sort="><img src="/client/images/c5.jpg"
                                                 alt=""></a>
                                     </div>
                                 </div>
